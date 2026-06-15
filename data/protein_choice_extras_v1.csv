@@ -1,0 +1,2 @@
+id,display_name,choice_type,serving_label,serving_g,energy_kcal,protein_g,fat_g,carbohydrate_g,fiber_g,salt_equivalent_g,iron_mg,calcium_mg,caffeine_mg,allergen_tags,role_tags,usable_problem_types,near_miss_problem_types,wrong_problem_types,notes
+protein_none,プロテインなし,protein_extra,摂取しない,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,,supplement_none;very_low_energy;very_low_protein;very_low_carb;caffeine_none;low_recovery_value,,F06;F08,F01;F02;F03;F04;F05;F07;F09,プロテインを使わない選択肢。食事だけで条件を満たせる問題では惜しい候補にできるが、運動後の主栄養補給としては基本的に不正解。

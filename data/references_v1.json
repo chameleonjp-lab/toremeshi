@@ -1,12 +1,12 @@
 {
-  "version": "v1.0_draft",
+  "version": "v1.0_final",
   "last_checked": "2026-06-15",
   "source_priority": [
     "1. 日本の食品成分値: 文部科学省 食品成分データベース / 日本食品標準成分表（八訂）増補2023年",
     "2. スポーツ栄養: 国際スポーツ栄養学会（ISSN）やACSM等の声明・査読論文",
     "3. アレルギー表示: 消費者庁",
     "4. 鉄などの栄養素説明: 公的機関または査読論文",
-    "5. 加工食品・外食・プロテイン: 実在製品ではなく標準モデル値として別管理"
+    "5. 加工食品・外食・プロテイン: 実在製品の公式表示を参照しつつ、問題用の標準モデル値として別管理"
   ],
   "references": [
     {
@@ -14,36 +14,155 @@
       "title": "食品成分データベース",
       "publisher": "文部科学省",
       "url": "https://fooddb.mext.go.jp/",
-      "used_for": ["食品成分の基本値", "100gあたり値から1食分への換算"]
+      "used_for": [
+        "食品成分の基本値",
+        "100gあたり値から1食分への換算"
+      ]
     },
     {
       "id": "SRC_MEXT_2023",
       "title": "日本食品標準成分表（八訂）増補2023年",
       "publisher": "文部科学省",
       "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_00001.html",
-      "used_for": ["食品成分表の正本", "引用時の根拠"]
+      "used_for": [
+        "食品成分表の正本",
+        "引用時の根拠"
+      ]
+    },
+    {
+      "id": "SRC_STANDARD_MODEL_V1",
+      "title": "トレメシ標準モデル計算 v1.0",
+      "publisher": "chameleonjp-lab/toremeshi",
+      "url": "data/food_verification_v1.csv",
+      "used_for": [
+        "加工食品",
+        "セット品",
+        "外食風メニュー",
+        "製品差が大きい食品の問題用数値"
+      ]
     },
     {
       "id": "SRC_CAA_ALLERGY_2026",
       "title": "食物アレルギー表示に関する情報",
       "publisher": "消費者庁",
       "url": "https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/",
-      "used_for": ["アレルギー除外タグ", "特定原材料の扱い"]
+      "used_for": [
+        "アレルギー除外タグ",
+        "特定原材料の扱い"
+      ]
     },
     {
       "id": "SRC_ISSN_PROTEIN_2017",
       "title": "International Society of Sports Nutrition Position Stand: protein and exercise",
       "publisher": "Journal of the International Society of Sports Nutrition",
       "url": "https://link.springer.com/article/10.1186/s12970-017-0177-8",
-      "used_for": ["F01", "F03", "F08", "プロテイン判定"]
+      "used_for": [
+        "F01",
+        "F03",
+        "F08",
+        "プロテイン判定"
+      ]
     },
     {
       "id": "SRC_NIH_IRON",
       "title": "Iron - Health Professional Fact Sheet",
       "publisher": "NIH Office of Dietary Supplements",
       "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/",
-      "used_for": ["F05", "鉄の説明"]
+      "used_for": [
+        "F05",
+        "鉄の説明"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_WHEY100_2026",
+      "title": "ザバス ホエイプロテイン100 リッチショコラ味 980g",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902777302102.html",
+      "used_for": [
+        "protein_whey_concentrate"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_WPI_CLEAR_2026",
+      "title": "ザバス プロ WPIクリア 840g",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902777350370.html",
+      "used_for": [
+        "protein_whey_isolate"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_CASEIN_WHEY_2026",
+      "title": "ザバス カゼイン＆ホエイ MPC100 ココア味 810g",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902777315614.html",
+      "used_for": [
+        "protein_casein_whey"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_SOY100_2026",
+      "title": "ザバス ソイプロテイン100 ココア味 2,000g",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902777308395.html",
+      "used_for": [
+        "protein_soy"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_WEIGHT_UP_2026",
+      "title": "ザバス ウェイトアップ キャラメルブラウニー風味 450g",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902777351827.html",
+      "used_for": [
+        "protein_weight_up"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_WHEY_DRINK_2026",
+      "title": "（ザバス）WHEY PROTEIN マスカット風味 430ml",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902705098640.html",
+      "used_for": [
+        "protein_whey_drink_wpi20"
+      ]
+    },
+    {
+      "id": "SRC_MEIJI_SAVAS_MILK_PROTEIN_DRINK_2026",
+      "title": "（ザバス）MILK PROTEIN 脂肪0 ヨーグルト風味 430ml",
+      "publisher": "株式会社 明治",
+      "url": "https://www.meiji.co.jp/products/sports/4902705001879.html",
+      "used_for": [
+        "protein_milk_drink15"
+      ]
+    },
+    {
+      "id": "SRC_MORINAGA_WEIDER_RECOVERY_2026",
+      "title": "リカバリーパワープロテイン",
+      "publisher": "森永製菓株式会社",
+      "url": "https://www.morinaga.co.jp/weider/products/recovery/",
+      "used_for": [
+        "protein_recovery_carb_protein"
+      ]
+    },
+    {
+      "id": "SRC_DNS_WHEY100_2026",
+      "title": "DNS プロテイン ホエイ100",
+      "publisher": "第一三共ヘルスケア株式会社",
+      "url": "https://www.daiichisankyo-hc.co.jp/site_dns/products/",
+      "used_for": [
+        "protein_dns_whey100"
+      ]
+    },
+    {
+      "id": "SRC_DNS_WHEY_SP_2026",
+      "title": "DNS ホエイプロテイン スーパープレミアム",
+      "publisher": "第一三共ヘルスケア株式会社",
+      "url": "https://www.daiichisankyo-hc.co.jp/site_dns/products/",
+      "used_for": [
+        "protein_dns_whey_sp"
+      ]
     }
   ],
-  "verification_rule": "試験公開前は、foods_v1.csv の nutrition_value_status が final_verified でない食品を正解根拠に使わない。"
+  "verification_rule": "試験公開前は、foods_v1.csv の nutrition_value_status が final_verified でない食品を正解根拠に使わない。加工食品・セット品・プロテインは、問題文に出した標準モデル値を正本として扱う。"
 }
