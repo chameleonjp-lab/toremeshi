@@ -1,0 +1,81 @@
+{
+  "version": "v1.0_draft",
+  "judgement_priority": [
+    "1. safety_exclusion: アレルギー・避けたい食品・カフェイン・医療領域に当たる条件を先に見る",
+    "2. problem_type_core: F01〜F09の主条件を満たすか見る",
+    "3. nutrient_numbers: 1食分の数値でしきい値を判定する",
+    "4. role_tags: タグは補助判定。数値と安全条件より上に置かない",
+    "5. explanation: 正解・惜しい・不正解の理由を短く説明できるものだけ出題に使う"
+  ],
+  "global_safety_rules": {
+    "allergy_first": "contains_* が相談者の除外条件に当たる場合は、栄養条件を満たしていても正解にしない。",
+    "caffeine_at_night": "F08では caffeine_mg > 0 の食品・飲料は原則不正解。",
+    "medical_limit": "鉄欠乏、摂食障害、低エネルギー利用可能性、疾患対応、サプリ処方は診断・治療として扱わない。試験では食事選択と相談推奨までにする。",
+    "label_variance": "加工食品、外食、プロテインは製品差が大きい。問題文に表示した標準モデル値だけで判定する。"
+  },
+  "problem_types": {
+    "F01": {
+      "name": "筋肥大・筋力アップ型",
+      "correct_conditions": ["protein_g >= 20", "role_tags に protein_main または recovery_combo を含む", "not heavy_digestive が望ましい。ただし通常食の時間帯なら moderate_fat までは許容", "allergy_first を満たす"],
+      "near_miss_conditions": ["protein_g が 8〜19.9g", "protein_g >= 20 だが高脂質で胃もたれ・夜条件に合わない", "protein_g >= 20 だが carb が必要な文脈で carb_g < 20"],
+      "wrong_conditions": ["protein_g < 8", "low_recovery_value または wrong_for_recovery", "除外アレルゲンに該当"],
+      "explanation_basis": "運動する人の筋量維持・増加では1日1.4〜2.0g/kgが目安で、1回量は20〜40gが一般目安。"
+    },
+    "F02": {
+      "name": "消費カロリーが大きい回復型",
+      "correct_conditions": ["energy_kcal >= 250", "protein_g >= 15", "carbohydrate_g >= 35", "role_tags に recovery_combo または high_carb を含む", "allergy_first を満たす"],
+      "near_miss_conditions": ["protein_g >= 15 だが carbohydrate_g < 25", "carbohydrate_g >= 35 だが protein_g < 12", "水分・糖質はあるが protein_g < 8"],
+      "wrong_conditions": ["energy_kcal < 100 かつ protein_g < 8", "very_low_energy または wrong_for_recovery", "除外アレルゲンに該当"],
+      "explanation_basis": "消耗が大きい運動後は、たんぱく質だけでなく糖質も回復に必要。"
+    },
+    "F03": {
+      "name": "減量中の筋肉維持型",
+      "correct_conditions": ["protein_g >= 20", "energy_kcal <= 450", "fat_g <= 12", "role_tags に high_protein または protein_main を含む", "very_high_energy を含まない", "allergy_first を満たす"],
+      "near_miss_conditions": ["低エネルギーだが protein_g < 15", "protein_g >= 20 だが fat_g > 12", "満腹感はあるが主たんぱく質ではない"],
+      "wrong_conditions": ["very_high_energy", "diet_only かつ protein_g < 8", "wrong_for_low_energy_risk", "除外アレルゲンに該当"],
+      "explanation_basis": "減量中はエネルギーを抑えつつ、たんぱく質を確保して除脂肪量を守る。"
+    },
+    "F04": {
+      "name": "体重が落ち気味・低エネルギー注意型",
+      "correct_conditions": ["energy_kcal >= 350", "protein_g >= 15", "carbohydrate_g >= 35 または high_energy", "role_tags に good_for_low_energy_risk または recovery_combo を含む", "allergy_first を満たす"],
+      "near_miss_conditions": ["energy_kcal >= 300 だが protein_g < 15", "protein_g >= 20 だが energy_kcal < 200", "高エネルギーだが high_fat で胃もたれしやすい"],
+      "wrong_conditions": ["very_low_energy", "diet_only", "low_recovery_value", "除外アレルゲンに該当"],
+      "explanation_basis": "体重低下や疲労が続く設定では、低カロリーだけを選ばず、エネルギーとたんぱく質を同時に足す。"
+    },
+    "F05": {
+      "name": "鉄を意識する型",
+      "correct_conditions": ["iron_mg >= 2.0", "protein_g >= 15 または 食事全体として主食・主菜と組み合わせられる", "role_tags に iron_support を含む", "allergy_first を満たす"],
+      "near_miss_conditions": ["iron_mg >= 1.0 だが protein_g < 8", "鉄はあるが vegetable_only で回復食として弱い", "iron_support はあるが単体ではエネルギー不足"],
+      "wrong_conditions": ["iron_mg < 0.5 かつ iron_support を含まない", "very_low_protein かつ low_energy", "除外アレルゲンに該当"],
+      "explanation_basis": "鉄は酸素運搬などに関わる。ただし鉄不足の診断や鉄剤判断は医療領域なので扱わない。"
+    },
+    "F06": {
+      "name": "胃もたれ・食欲なし型",
+      "correct_conditions": ["fat_g <= 8", "fiber_g <= 4.5", "role_tags に light_meal または easy_to_eat または soup を含む", "protein_g >= 5 または carbohydrate_g >= 20", "allergy_first を満たす"],
+      "near_miss_conditions": ["食べやすいが protein_g < 5", "低脂質だが fiber_g > 4.5", "たんぱく質はあるが量が重い"],
+      "wrong_conditions": ["high_fat", "heavy_digestive", "very_high_energy", "除外アレルゲンに該当"],
+      "explanation_basis": "胃腸症状がある設定では、脂質と食物繊維が多いもの、大量の食事を避ける。"
+    },
+    "F07": {
+      "name": "食事制限・苦手食品対応型",
+      "correct_conditions": ["相談者の avoided_allergen_tags と allergen_tags が交差しない", "相談者の苦手食品タグと role_tags が交差しない", "その問題の栄養目的も最低条件を満たす", "代替食品として説明できる"],
+      "near_miss_conditions": ["除外条件は満たすが、栄養目的の主条件が一部不足", "代替にはなるが、たんぱく質またはエネルギーが不足"],
+      "wrong_conditions": ["avoided_allergen_tags と allergen_tags が交差する", "苦手食品として明記されたカテゴリに該当", "栄養目的からも外れる"],
+      "explanation_basis": "アレルギーや明確な除外条件は、栄養価より先に判定する。"
+    },
+    "F08": {
+      "name": "夜遅い・寝る前型",
+      "correct_conditions": ["caffeine_mg == 0", "fat_g <= 8", "energy_kcal <= 350", "role_tags に light_meal または good_for_late_night または pre_sleep_candidate を含む", "heavy_digestive を含まない", "allergy_first を満たす"],
+      "near_miss_conditions": ["カフェインなしだが脂質がやや多い", "軽いが protein_g < 5", "たんぱく質はあるが energy_kcal > 350"],
+      "wrong_conditions": ["caffeine_mg > 0", "high_fat または heavy_digestive", "very_high_energy", "除外アレルゲンに該当"],
+      "explanation_basis": "寝る前はカフェインと重い食事を避ける。就寝前たんぱく質ではカゼイン30〜40gが根拠候補。"
+    },
+    "F09": {
+      "name": "汗・水分・塩分型",
+      "correct_conditions": ["role_tags に hydration_support または soup または drink を含む", "salt_equivalent_g >= 0.3", "汗が多い・暑い・運動時間が長い設定では carbohydrate_g >= 10 が望ましい", "allergy_first を満たす"],
+      "near_miss_conditions": ["水分はあるが salt_equivalent_g < 0.3", "塩分はあるが hydration_support がない", "糖質はあるが水分・塩分が不足"],
+      "wrong_conditions": ["hydration_support がなく salt_equivalent_g < 0.3", "caffeine_high で夜条件も重なる", "除外アレルゲンに該当"],
+      "explanation_basis": "汗を多くかいた設定では水分だけでなく、ナトリウムと必要に応じて糖質も考える。"
+    }
+  }
+}
