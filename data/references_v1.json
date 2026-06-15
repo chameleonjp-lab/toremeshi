@@ -1,0 +1,49 @@
+{
+  "version": "v1.0_draft",
+  "last_checked": "2026-06-15",
+  "source_priority": [
+    "1. 日本の食品成分値: 文部科学省 食品成分データベース / 日本食品標準成分表（八訂）増補2023年",
+    "2. スポーツ栄養: 国際スポーツ栄養学会（ISSN）やACSM等の声明・査読論文",
+    "3. アレルギー表示: 消費者庁",
+    "4. 鉄などの栄養素説明: 公的機関または査読論文",
+    "5. 加工食品・外食・プロテイン: 実在製品ではなく標準モデル値として別管理"
+  ],
+  "references": [
+    {
+      "id": "SRC_MEXT_FOODDB",
+      "title": "食品成分データベース",
+      "publisher": "文部科学省",
+      "url": "https://fooddb.mext.go.jp/",
+      "used_for": ["食品成分の基本値", "100gあたり値から1食分への換算"]
+    },
+    {
+      "id": "SRC_MEXT_2023",
+      "title": "日本食品標準成分表（八訂）増補2023年",
+      "publisher": "文部科学省",
+      "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_00001.html",
+      "used_for": ["食品成分表の正本", "引用時の根拠"]
+    },
+    {
+      "id": "SRC_CAA_ALLERGY_2026",
+      "title": "食物アレルギー表示に関する情報",
+      "publisher": "消費者庁",
+      "url": "https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/",
+      "used_for": ["アレルギー除外タグ", "特定原材料の扱い"]
+    },
+    {
+      "id": "SRC_ISSN_PROTEIN_2017",
+      "title": "International Society of Sports Nutrition Position Stand: protein and exercise",
+      "publisher": "Journal of the International Society of Sports Nutrition",
+      "url": "https://link.springer.com/article/10.1186/s12970-017-0177-8",
+      "used_for": ["F01", "F03", "F08", "プロテイン判定"]
+    },
+    {
+      "id": "SRC_NIH_IRON",
+      "title": "Iron - Health Professional Fact Sheet",
+      "publisher": "NIH Office of Dietary Supplements",
+      "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/",
+      "used_for": ["F05", "鉄の説明"]
+    }
+  ],
+  "verification_rule": "試験公開前は、foods_v1.csv の nutrition_value_status が final_verified でない食品を正解根拠に使わない。"
+}
