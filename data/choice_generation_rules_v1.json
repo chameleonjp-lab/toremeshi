@@ -1,0 +1,70 @@
+{
+  "version": "v1.0_draft",
+  "purpose": "F01〜F09の問題で、正解1つ、惜しい候補2つ、全く違う候補1つを安定して生成する。",
+  "generation_order": [
+    "1. 問題タイプを1つ選ぶ",
+    "2. 相談者条件を読む。性別・体重・身長・BMI・運動内容・悩み・食事制限を使う",
+    "3. safety_exclusion を先に適用する",
+    "4. 問題タイプの correct_conditions を満たす食品・プロテインから正解を1つ選ぶ",
+    "5. near_miss_conditions を満たす候補を2つ選ぶ",
+    "6. wrong_conditions を満たす候補を1つ選ぶ",
+    "7. 4択の表示順をシャッフルする",
+    "8. 解説では、正解理由と惜しい理由を1文ずつ出す"
+  ],
+  "candidate_roles": {
+    "correct": {
+      "count": 1,
+      "rules": [
+        "安全条件に反しない",
+        "問題タイプの主条件をすべて満たす",
+        "問題文の数値と矛盾しない",
+        "解説で根拠を説明できる"
+      ]
+    },
+    "near_miss": {
+      "count": 2,
+      "rules": [
+        "安全条件に反しないことを基本にする",
+        "主条件の一部は満たす",
+        "重要条件が1つ足りない",
+        "正解と見比べると学びがある"
+      ],
+      "near_miss_patterns": [
+        "protein_ok_carb_low",
+        "carb_ok_protein_low",
+        "energy_ok_protein_low",
+        "light_but_too_low_energy",
+        "iron_ok_but_meal_incomplete",
+        "hydration_ok_sodium_low",
+        "caffeine_none_but_heavy",
+        "allergen_safe_but_nutrient_weak"
+      ]
+    },
+    "wrong": {
+      "count": 1,
+      "rules": [
+        "目的と明確に合わない",
+        "ただし毎回わかりやす過ぎる候補を使わない",
+        "アレルギー違反だけで不正解にする問題は出し過ぎない",
+        "低品質なひっかけではなく、根拠で説明できる不正解にする"
+      ]
+    }
+  },
+  "anti_pattern_rules": [
+    "プロテインの種類名だけで正解にしない。必ず数値と条件を見る。",
+    "野菜だけ、果物だけ、水だけを筋トレ後の正解にしない。",
+    "減量中でもノンカロリーだけを正解にしない。",
+    "夜遅い問題でカフェイン入りを正解にしない。",
+    "アレルギー食品を笑いどころのように扱わない。",
+    "ポテトチップス、エナジードリンク、ブラックコーヒーのような明らかなハズレを連発しない。"
+  ],
+  "example_generation": {
+    "F02": {
+      "prompt_context": "脚トレ後で消費カロリーが大きい。次の食事で回復を優先したい。",
+      "correct_example": "food_chicken_rice",
+      "near_miss_examples": ["food_salad_chicken", "food_banana"],
+      "wrong_example": "food_black_coffee",
+      "explanation": "正解はたんぱく質と炭水化物を同時に取れる。サラダチキンはたんぱく質はあるが糖質が足りない。バナナは糖質はあるがたんぱく質が足りない。ブラックコーヒーは回復食として弱い。"
+    }
+  }
+}
