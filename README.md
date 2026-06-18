@@ -1,8 +1,39 @@
-# トレメシ 情報管理リポジトリ
+# トレメシ
 
-このリポジトリは、筋トレ後の栄養クイズ「トレメシ」の食品・プロテイン・判定条件・4択生成ルールを管理する場所です。
+「トレメシ」は、筋トレ後や減量中などの相談内容に合わせて、CSVデータに基づく食事・プロテイン候補を選ぶブラウザゲームです。
 
-## 現在の方針
+## 公開 URL
+
+- ゲーム: <https://chameleonjp.codeberg.page/toremeshi/>
+- 他のゲーム: <https://chameleonjp.codeberg.page/chameleonjp_lab/>
+
+## 実装状況
+
+- `index.html` にブラウザゲーム本体を実装済みです。
+- 開始時に 3 秒カウントダウンを表示します。
+- 15 問出題し、正解・惜しい・不正解、回答時間、連続正解数からスコアを計算します。
+- Supabase の共通 RPC `submit_score` / `get_best_score_ranking` を使用してランキングを送受信します。
+- Supabase URL は共通仕様の `https://mlpnjgezrnhdxsxolyzj.supabase.co` を使用します。
+- ランキング送信 payload は `p_display_name`, `p_game_slug`, `p_score`, `p_client_version` を使用します。
+
+## データファイル
+
+```text
+data/
+  questions_v1_100.csv
+  foods_v1.csv
+  protein_models_v1.csv
+  protein_choice_extras_v1.csv
+  problem_type_rules_v1.json
+  choice_generation_rules_v1.json
+  references_v1.json
+docs/
+  source_policy.md
+  game_implementation_plan_and_codex_request_v1.md
+  game_implementation_fix_plan_v2.md
+```
+
+## 判定方針
 
 プロのトレーナー試験にも使えるように、ゲームとしての分かりやすさより、根拠の正しさを優先します。
 
@@ -16,28 +47,6 @@
 
 タグだけで正解にしません。
 たとえば「ホエイだから正解」「ソイだから不正解」のようには扱いません。
-
-## ファイル構成
-
-```text
-data/
-  foods_v1.csv
-  protein_models_v1.csv
-  problem_type_rules_v1.json
-  choice_generation_rules_v1.json
-  references_v1.json
-docs/
-  source_policy.md
-```
-
-## 作業状況
-
-- 食品80種類 v1.0ドラフト: 作成済み
-- 1食分量と栄養素数値: ドラフト入力済み
-- 安全除外タグ: 作成済み
-- プロテイン10種類標準モデル: 作成済み
-- F01〜F09正解条件: 数値しきい値ドラフト作成済み
-- 4択生成ルール: 作成済み
 
 ## 重要な注意
 
