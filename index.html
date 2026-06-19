@@ -85,13 +85,13 @@
   </main>
 <script type="module">
 const GAME_SLUG='toremeshi';
-const CLIENT_VERSION='toremeshi_v20260618_01';
+const CLIENT_VERSION='toremeshi_v20260619_01';
 const SUPABASE_URL='https://mlpnjgezrnhdxsxolyzj.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_drzcy0v97knU6FgjqSgBHw_0A9XPdFM';
 const LAB_URL='https://chameleonjp.codeberg.page/chameleonjp_lab/';
 const GAME_URL='https://chameleonjp.codeberg.page/toremeshi/';
 const NAME_STORAGE_KEY=`chameleonjp_${GAME_SLUG}_player_name`;
-const FILES={questions:'data/questions_v1_100.csv',foods:'data/foods_v1.csv',proteins:'data/protein_models_v1.csv',extras:'data/protein_choice_extras_v1.csv',rules:'data/problem_type_rules_v1.json',choiceRules:'data/choice_generation_rules_v1.json'};
+const FILES={questions:'data/questions_v2_100.csv',foods:'data/foods_v1.csv',proteins:'data/protein_models_v1.csv',extras:'data/protein_choice_extras_v1.csv',rules:'data/problem_type_rules_v1.json',choiceRules:'data/choice_generation_rules_v1.json'};
 const PROBLEM_TYPE_LABELS={F01:'筋肉を増やしたい人',F02:'回復を優先したい人',F03:'減量中でも筋肉を守りたい人',F04:'体重が落ち気味の人',F05:'鉄を意識したい人',F06:'食欲がない人',F07:'食事制限がある人',F08:'夜遅く食べる人',F09:'汗を多くかいた人'};
 const TYPE_KEYS=Object.keys(PROBLEM_TYPE_LABELS);const REQUIRED=['question_id','version','problem_type','question_text','correct_choice_id','correct_choice_name','near_miss_choice_1_id','near_miss_choice_1_name','near_miss_choice_1_reason','near_miss_choice_2_id','near_miss_choice_2_name','near_miss_choice_2_reason','wrong_choice_id','wrong_choice_name','wrong_reason','validation_status','validation_notes'];
 const NUTR={F01:['protein_g','fat_g'],F02:['energy_kcal','protein_g','carbohydrate_g'],F03:['energy_kcal','protein_g','fat_g'],F04:['energy_kcal','protein_g','carbohydrate_g'],F05:['iron_mg','protein_g'],F06:['fat_g','fiber_g','protein_g','carbohydrate_g'],F07:['allergen_tags','protein_g','energy_kcal','carbohydrate_g'],F08:['caffeine_mg','fat_g','energy_kcal'],F09:['salt_equivalent_g','carbohydrate_g']};
