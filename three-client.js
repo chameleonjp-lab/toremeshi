@@ -248,6 +248,7 @@ function buildProceduralCharacter() {
 
   const rig = {};
   const root = new THREE.Group();
+  rig.root = root;
 
   const skin = new THREE.MeshStandardMaterial({ color: 0xf2c9a0, roughness: 0.7 });
   const shirt = new THREE.MeshStandardMaterial({ color: 0x34d399, roughness: 0.6 }); // ゲームのアクセント色（緑）
