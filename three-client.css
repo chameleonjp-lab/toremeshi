@@ -1,0 +1,39 @@
+/*
+ * three-client.css
+ * 相談相手キャラクター（Three.js）の表示エリア専用スタイル。
+ * 既存ゲームのUIにはかぶせず、通常フローの独立した要素として配置する。
+ * ここに書くのは見た目だけ。ゲームのロジックやレイアウトには干渉しない。
+ */
+
+#three-character-root {
+  width: 100%;
+  max-width: 420px;
+  margin: 16px auto;
+  box-sizing: border-box;
+}
+
+#three-character-container {
+  width: 100%;
+  height: 280px;
+  min-height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  /* 既存ゲームのジム背景に馴染む、控えめな半透明パネル */
+  background: linear-gradient(180deg, rgba(247, 249, 252, 0.06) 0%, rgba(180, 220, 255, 0.10) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) inset, 0 8px 24px rgba(0, 0, 0, 0.25);
+  /* キャラクターは演出のみ。クリックは下のUIへ素通りさせない代わりに、自分では何もしない */
+  pointer-events: none;
+}
+
+#three-character-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 480px) {
+  #three-character-container {
+    height: 220px;
+  }
+}
