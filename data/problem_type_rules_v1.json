@@ -108,7 +108,7 @@
       "explanation_basis": "体重低下や疲労が続く設定では、低カロリーだけを選ばず、エネルギーとたんぱく質を同時に足す。"
     },
     "F05": {
-      "name": "鉄を意識する型",
+      "name": "鉄分を意識する型",
       "correct_conditions": [
         "iron_mg >= 2.0",
         "protein_g >= 15 または 食事全体として主食・主菜と組み合わせられる",
@@ -118,7 +118,7 @@
       ],
       "near_miss_conditions": [
         "iron_mg >= 1.0 だが protein_g < 8",
-        "鉄はあるが vegetable_only で回復食として弱い",
+        "鉄分はあるが vegetable_only で回復食として弱い",
         "iron_support はあるが単体ではエネルギー不足"
       ],
       "wrong_conditions": [
@@ -126,7 +126,7 @@
         "very_low_protein かつ low_energy",
         "除外アレルゲンに該当"
       ],
-      "explanation_basis": "鉄は酸素運搬などに関わる。ただし鉄不足の診断や鉄剤判断は医療領域なので扱わない。"
+      "explanation_basis": "鉄分は酸素運搬などに関わる栄養成分です。ただし鉄不足の診断や鉄剤判断は医療領域なので扱わない。"
     },
     "F06": {
       "name": "胃もたれ・食欲なし型",
