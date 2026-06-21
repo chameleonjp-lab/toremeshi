@@ -10,7 +10,8 @@
 ## 実装状況
 
 - `index.html` にブラウザゲーム本体を実装済みです。
-- 開始時に 3 秒カウントダウンを表示します。
+- 出題データは相談文形式の `data/questions_v2_100.csv` を読み込みます（旧 `data/questions_v1_100.csv` は参考として残置）。
+- 開始時に世界観イントロ画面を表示し、その後に 3 秒カウントダウンを表示します。
 - 15 問出題し、正解・惜しい・不正解、回答時間、連続正解数からスコアを計算します。
 - Supabase の共通 RPC `submit_score` / `get_best_score_ranking` を使用してランキングを送受信します。
 - Supabase URL は共通仕様の `https://mlpnjgezrnhdxsxolyzj.supabase.co` を使用します。
@@ -20,7 +21,8 @@
 
 ```text
 data/
-  questions_v1_100.csv
+  questions_v2_100.csv  # 現行ロード対象（相談文形式）
+  questions_v1_100.csv  # 旧版（参考用に残置）
   foods_v1.csv
   protein_models_v1.csv
   protein_choice_extras_v1.csv
