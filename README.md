@@ -5,7 +5,7 @@
 ## 公開 URL
 
 - ゲーム: <https://chameleonjp.codeberg.page/toremeshi/>
-- 他のゲーム: <https://chameleonjp.codeberg.page/chameleonjp_lab/>
+- 他のゲーム: <https://chameleonjp-lab.github.io/chameleonjp_lab/>
 
 ## 実装状況
 
