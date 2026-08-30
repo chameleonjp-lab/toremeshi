@@ -76,7 +76,7 @@ const GAME_SLUG = "toremeshi";
 const CLIENT_VERSION = "toremeshi_v20260618_01";
 const SUPABASE_URL = "https://mlpnjgezrnhdxsxolyzj.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "...";
-const LAB_URL = "https://chameleonjp.codeberg.page/chameleonjp_lab/";
+const LAB_URL = "https://chameleonjp-lab.github.io/chameleonjp_lab/";
 ```
 
 現在は `GAME_SLUG` と `LAB_URL` が定数化されておらず、`toremeshi` や実験場URLが関数内に直接書かれています。
