@@ -1,0 +1,16 @@
+{
+  "required": [
+    "index.html",
+    "three-client.css",
+    "three-client.js",
+    "data/questions_v2_100.csv",
+    "data/foods_v1.csv",
+    "data/protein_models_v1.csv",
+    "data/protein_choice_extras_v1.csv",
+    "data/problem_type_rules_v1.json",
+    "data/choice_generation_rules_v1.json"
+  ],
+  "optional": [
+    "assets/characters/trainer.glb"
+  ]
+}
