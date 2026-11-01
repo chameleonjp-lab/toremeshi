@@ -1,0 +1,11 @@
+export function createSound({storage,context,hidden=()=>false,now=()=>performance.now()}) {
+ const key='toremeshi:sound:v1';let settings={enabled:true,volume:0.18},ctx=null,last=-Infinity;const voices=new Set();let persisted=true;
+ try{const saved=JSON.parse(storage.getItem(key)||'null');if(saved&&typeof saved.enabled==='boolean'&&Number.isFinite(saved.volume)&&saved.volume>=0&&saved.volume<=1)settings={enabled:saved.enabled,volume:saved.volume};}catch(_){}
+ function stop(){for(const cleanup of [...voices])cleanup();}
+ function save(){try{storage.setItem(key,JSON.stringify(settings));persisted=true}catch(_){persisted=false}}
+ function setEnabled(value){settings.enabled=Boolean(value);if(!settings.enabled)stop();save();}
+ function setVolume(value){const n=Number(value);if(!Number.isFinite(n))return;settings.volume=Math.max(0,Math.min(1,n));if(settings.volume===0)stop();save();}
+ function unlock(){if(!settings.enabled||!settings.volume||hidden())return;try{if(!ctx){ctx=context();ctx.onstatechange=()=>{if(ctx.state!=='running')stop()};}if(ctx.state!=='running'){const promise=ctx.resume();if(promise?.catch)promise.catch(()=>{});}}catch(_){} }
+ function play(event){if(!settings.enabled||!settings.volume||hidden())return;unlock();if(!ctx||ctx.state!=='running')return;const at=now();if(at-last<70)return;last=at;const notes={start:[440,.12],countdown:[520,.08],correct:[780,.16],near_miss:[420,.13],wrong:[180,.13],next:[500,.06],result:[880,.28],cancel:[300,.06]};const note=notes[event];if(!note)return;stop();try{const oscillator=ctx.createOscillator(),gain=ctx.createGain();let cleaned=false;const cleanup=()=>{if(cleaned)return;cleaned=true;try{oscillator.stop()}catch(_){}try{oscillator.disconnect()}catch(_){}try{gain.disconnect()}catch(_){}voices.delete(cleanup)};voices.add(cleanup);oscillator.type='sine';oscillator.frequency.setValueAtTime(note[0],ctx.currentTime);gain.gain.setValueAtTime(Math.max(.0001,settings.volume*.18),ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+note[1]);oscillator.connect(gain);gain.connect(ctx.destination);oscillator.onended=cleanup;oscillator.start();oscillator.stop(ctx.currentTime+note[1]);}catch(_){stop();}}
+ return {get settings(){return {...settings}},get persisted(){return persisted},setEnabled,setVolume,unlock,play,stop};
+}

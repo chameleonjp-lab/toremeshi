@@ -8,7 +8,11 @@
     "data/protein_models_v1.csv",
     "data/protein_choice_extras_v1.csv",
     "data/problem_type_rules_v1.json",
-    "data/choice_generation_rules_v1.json"
+    "data/choice_generation_rules_v1.json",
+    "play-receipts.mjs",
+    "sound.mjs",
+    "i18n.mjs",
+    "locales.mjs"
   ],
   "optional": [
     "assets/characters/trainer.glb"

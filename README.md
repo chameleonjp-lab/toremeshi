@@ -6,7 +6,7 @@
 
 新人トレーナーとして15人の相談に答えるクイズです。相談文を読み、食事・プロテインの候補ボタンをクリックまたはタップします。
 
-1. 名前を入力し、イントロの「相談を受ける」を選びます。
+1. 名前は任意です。空欄でも遊べます。開始後、イントロの「相談を受ける」を選びます。
 2. カウントダウン後、相談内容に合う選択肢を選びます。
 3. 「正解・惜しい・不正解」と理由を読み、「次の相談者へ」進みます。
 4. 15問を終えると、得点・正答率・回答時間・連続正解の結果を確認できます。
@@ -18,7 +18,7 @@
 - ゲームの案内先（このREADME更新では公開先の実動作は未検証）: <https://chameleonjp.codeberg.page/toremeshi/>
 - 他のゲーム: <https://chameleonjp-lab.github.io/chameleonjp_lab/>
 
-15問終了時、入力名と得点を外部ランキングへ自動送信する実装があります。このREADME更新では送信・ランキングの実稼働を確認していません。
+プレイ開始時に名前がある場合だけ、15問終了時の固定名と得点を外部ランキングへ自動送信します。空欄の結果を後から公開しません。再送は同じ submission UUID を使います。依存する共通 receipt RPC の本番適用と独立参加者識別は未完了です。本番送信を確認済みとは扱いません。
 
 ## 手元で試す
 
@@ -30,9 +30,9 @@ CSVを読み込むため、リポジトリを静的HTTPサーバーで配信し�
 - 出題データは相談文形式の `data/questions_v2_100.csv` を読み込みます（旧 `data/questions_v1_100.csv` は参考として残置）。
 - 開始時に世界観イントロ画面を表示し、その後に 3 秒カウントダウンを表示します。
 - 15 問出題し、正解・惜しい・不正解、回答時間、連続正解数からスコアを計算します。
-- Supabase の共通 RPC `submit_score` / `get_best_score_ranking` を使用してランキングを送受信します。
+- Supabase の共通 RPC `submit_score_once_shared_v1` / `get_best_score_ranking` を使用してランキングを送受信します。
 - Supabase URL は共通仕様の `https://mlpnjgezrnhdxsxolyzj.supabase.co` を使用します。
-- ランキング送信 payload は `p_display_name`, `p_game_slug`, `p_score`, `p_client_version` を使用します。
+- ランキング送信 payload は `p_submission_id`, `p_display_name`, `p_game_slug`, `p_score`, `p_client_version` を使用します。
 
 ## データファイル
 
@@ -82,3 +82,21 @@ docs/
 
 鉄欠乏の診断、摂食障害、低エネルギー利用可能性の診断、疾患別の栄養指導、サプリメント処方は扱いません。
 必要な場合は、医師または管理栄養士への相談を促す問題文にします。
+
+## 共通仕様後続と検査
+
+ホームの言語設定と効果音・音量を保存します。保存済みオフ/音量0を尊重し、言語変更はホームに限定します。匿名でも結果のランキングを閲覧でき、X共有は本人が投稿を確定します。未送信結果はプレイ別に残し、ホームで再送できます。端末への保存に失敗した場合は警告を表示します。
+
+```sh
+npm ci --ignore-scripts
+npm test
+python3 scripts/test-pages.py
+python3 scripts/prepare-pages.py
+# ブラウザが利用可能な環境（本番への通信はmock/遮断）
+npx playwright install chromium webkit
+npm run test:e2e
+```
+
+PRでは検証のみ、mainマージ後に同一commitの検証済み成果物を既存workflowで配信します。設定・公開後の確認・URL切替はまだ行っていません。現行Codeberg案内先は維持します。
+
+13項目対応表・効果音一覧・実機確認・依存関係・適用順・復元は [共通仕様後続](docs/common-spec-followup.md) を参照してください。厳密な独立参加者上位30人、母語品質、iPhone実機、実音、本番の実稼働は、ローカル/CI試験と区別します。

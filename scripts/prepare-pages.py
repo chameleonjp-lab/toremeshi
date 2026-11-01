@@ -42,9 +42,9 @@ def validate_and_stage():
         path = ROOT / name
         if path.is_symlink() or not path.is_file() or not path.resolve().is_relative_to(ROOT):
             raise ValueError(f"missing or unsafe runtime file: {name}")
-        if any(part.startswith('.') for part in Path(name).parts) or Path(name).suffix.lower() not in {'.html','.js','.css','.csv','.json','.glb','.png','.svg','.webp','.jpg','.mp3','.ogg','.wav'}:
+        if any(part.startswith('.') for part in Path(name).parts) or Path(name).suffix.lower() not in {'.html','.js','.mjs','.css','.csv','.json','.glb','.png','.svg','.webp','.jpg','.mp3','.ogg','.wav'}:
             raise ValueError(f"non-runtime file is not publishable: {name}")
-        if path.suffix in {'.html','.js','.css','.json'}:
+        if path.suffix in {'.html','.js','.mjs','.css','.json'}:
             text = path.read_text()
             if '-----BEGIN PRIVATE KEY-----' in text or 'sb_secret_' in text:
                 raise ValueError(f"private credential marker in {name}")
@@ -58,7 +58,7 @@ def validate_and_stage():
         if name not in files:
             raise ValueError(f"HTML runtime resource is absent from manifest: {name}")
     with tempfile.TemporaryDirectory() as tmp:
-        scripts = parser.scripts + [('module', (ROOT / f).read_text()) for f in files if f.endswith('.js')]
+        scripts = parser.scripts + [('module', (ROOT / f).read_text()) for f in files if f.endswith(('.js','.mjs'))]
         for index, (kind, text) in enumerate(scripts):
             if kind in {'application/ld+json','importmap','application/json'}:
                 json.loads(text)

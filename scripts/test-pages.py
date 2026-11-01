@@ -44,6 +44,15 @@ class PublicationBoundaryTests(unittest.TestCase):
         (self.root / 'scripts/pages-files.json').write_text(json.dumps({'required':['index.html','.env']}))
         (self.root / '.env').write_text('secret')
         with self.assertRaises(ValueError): self.build()
+    def test_mjs_runtime_is_validated_and_staged(self):
+        (self.root / 'module.mjs').write_text('export const x=1;')
+        (self.root / 'scripts/pages-files.json').write_text(json.dumps({'required':['index.html','module.mjs']}))
+        self.build()
+        self.assertTrue((module.OUT / 'module.mjs').is_file())
+    def test_mjs_syntax_error_prevents_publication(self):
+        (self.root / 'module.mjs').write_text('export const x=;')
+        (self.root / 'scripts/pages-files.json').write_text(json.dumps({'required':['index.html','module.mjs']}))
+        with self.assertRaises(module.subprocess.CalledProcessError): self.build()
     def test_secret_marker_prevents_publication(self):
         (self.root / 'index.html').write_text('<script>const key="sb_secret_test";</script>')
         with self.assertRaises(ValueError): self.build()

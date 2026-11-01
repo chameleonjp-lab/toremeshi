@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
+import {catalogs} from '../locales.mjs';
 
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const helper=html.match(/<script>\s*(\(\(\) => \{\s*'use strict';\s*const dialog = document\.getElementById\('commonShareFallback'\);[\s\S]*?\}\)\(\);)\s*<\/script>/)?.[1];
@@ -11,7 +12,7 @@ function setup(open=()=>null,writeText=async()=>{}) {
   for(const id of ['commonShareFallback','commonShareText','commonShareStatus','commonShareCopy','commonShareClose']) {
     nodes.set(id,{value:'',textContent:'',open:false,events:{},addEventListener(name,cb){this.events[name]=cb;},showModal(){this.open=true;},close(){this.open=false;},focus(){},select(){this.selected=true;}});
   }
-  const window={open};
+  const window={open,gameT:key=>catalogs.ja.ui[key]};
   vm.runInNewContext(helper,{window,document:{getElementById:id=>nodes.get(id)},navigator:{clipboard:{writeText}},URL});
   return {window,nodes};
 }
