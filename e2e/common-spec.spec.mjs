@@ -1,8 +1,16 @@
 import {test,expect} from '@playwright/test';
 import {catalogs} from '../locales.mjs';
+import {readFileSync,existsSync} from 'node:fs';
+import path from 'node:path';
+test.use({serviceWorkers:'block'});
+const root=path.resolve(new URL('..',import.meta.url).pathname);
+const manifest=JSON.parse(readFileSync(path.join(root,'scripts/pages-files.json'),'utf8'));
+const staticFiles=new Set([...manifest.required,...manifest.optional]);
+const mime={'.html':'text/html','.js':'application/javascript','.mjs':'application/javascript','.css':'text/css','.csv':'text/csv','.json':'application/json'};
 async function boot(page,language){
  await page.addInitScript(language=>{localStorage.setItem('toremeshi:language:v1',language);window.__rpc=[];const real=window.setTimeout;window.setTimeout=(fn,ms,...args)=>real(fn,Math.min(ms||0,5),...args);},language);
- await page.route('**/*',async route=>{const url=new URL(route.request().url());if(url.hostname==='127.0.0.1')return route.continue();if(url.pathname.includes('@supabase/supabase-js'))return route.fulfill({contentType:'application/javascript',body:`export const createClient=()=>({rpc:async(name,payload)=>{window.__rpc.push({name,payload});return name==='get_best_score_ranking'?{data:[{rank:1,display_name:'同名',score:100},{rank:1,display_name:'同名',score:100},{rank:3,display_name:'<b>safe</b>',score:90}],error:null}:{data:[{accepted:true,result_normalized_name:payload.p_display_name,result_display_name:payload.p_display_name,result_first_score:payload.p_score,result_best_score:payload.p_score,result_play_count:1,is_first_play:true,is_new_best:true,was_duplicate:false}],error:null}}});`});return route.abort();});
+ await page.routeWebSocket('**/*',ws=>ws.close());
+ await page.route('**/*',async route=>{const request=route.request(),url=new URL(request.url());if(!['GET','HEAD'].includes(request.method()))return route.abort('blockedbyclient');if(url.origin==='http://127.0.0.1:4175'){const relative=url.pathname==='/'?'index.html':decodeURIComponent(url.pathname.slice(1));if(!staticFiles.has(relative))return route.abort('blockedbyclient');const file=path.join(root,relative);if(!existsSync(file))return route.fulfill({status:404,body:''});return route.fulfill({contentType:mime[path.extname(file)]||'application/octet-stream',body:request.method()==='HEAD'?Buffer.alloc(0):readFileSync(file)})}if(url.origin==='https://cdn.jsdelivr.net'&&url.pathname==='/npm/@supabase/supabase-js/+esm')return route.fulfill({contentType:'application/javascript',body:`export const createClient=()=>({rpc:async(name,payload)=>{window.__rpc.push({name,payload});return name==='get_best_score_ranking'?{data:[{rank:1,display_name:'同名',score:100},{rank:1,display_name:'同名',score:100},{rank:3,display_name:'<b>safe</b>',score:90}],error:null}:{data:[{accepted:true,result_normalized_name:payload.p_display_name,result_display_name:payload.p_display_name,result_first_score:payload.p_score,result_best_score:payload.p_score,result_play_count:1,is_first_play:true,is_new_best:true,was_duplicate:false}],error:null}}});`});return route.abort();});
  await page.goto('/');await expect(page.locator('.name-input')).toBeVisible();
 }
 for(const language of Object.keys(catalogs))test(`guest completes all 15 questions and views rankings in ${language}`,async({page})=>{

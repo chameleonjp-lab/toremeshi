@@ -2,11 +2,11 @@ name: Validate and publish Pages
 on:
   pull_request:
   push:
-    branches: ["main"]
+    branches: ["main", "codex-share-thumbnail-20261102"]
 permissions:
   contents: read
 concurrency:
-  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  group: pages-${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'production' || github.ref }}
   cancel-in-progress: true
 jobs:
   validate:
@@ -23,10 +23,19 @@ jobs:
       - run: npm test
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
+      - run: npm install --no-save --package-lock=false --ignore-scripts three@0.184.0
+      - run: node scripts/share-capture.mjs
+      - name: Save anonymous actual-game material
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: toremeshi-share-capture
+          path: test-results/share-capture/
+          if-no-files-found: ignore
       - run: python scripts/test-pages.py
       - run: python scripts/prepare-pages.py
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           path: _site
   deploy:
