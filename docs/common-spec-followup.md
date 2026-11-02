@@ -86,3 +86,10 @@ iPhone 17 Pro Safariで: 縦/横/キーボード表示中に任意名と設定/�
 - ローカルPlaywrightはChromium executable未存在で起動前に停止。`--list`でChromium/WebKit計32シナリオの収集は確認。ブラウザ実行はPR CIの別ゲートであり、収集成功を動作成功とは扱わない。全外部通信を遮断しSupabase importだけmockへ置換するテストで、本番スコアは送らない。
 
 PR CIの最終結果はPRのexact head checkを参照。本書時点では本番公開/実機/母語品質/独立参加者契約まで完了したとは扱わない。
+
+
+## 2026-11-02 09:36 JST: 通常RPC受領応答の後続修正
+
+基準head `9abb0959eb5cde5f3c23099c0823d69b9680f6ec`。通常共有RPCのnormalized nameはDBのbtrim契約（小文字化なし）で開始名へ結び付け、display nameも同じ送信名を検査する。first/best/play countはPostgreSQL integerの範囲を検査し、desc方式のbestが今回提出点・初回点より小さい矛盾も成功扱いしない。異常ACKは結果と同一UUIDを保持して再送できる。first_score=0や合法な負の履歴を一律に拒否せず、スコア・保存キー・参加者識別・採点・DBは変更しない。
+
+8異常ケースは修正前sentとなる失敗を確認し、修正後はfailed→同じUUID/内容での再送成功を確認。合法なfirst0/負履歴の3ケースも維持。unit53件成功、Pages検査8件成功、公開用13ファイルの構文/ステージ成功。ブラウザmockの誤った小文字化をDB契約へ修正。両ブラウザのこの差分の結果は新headのCI確認後にPR本文へ記録する。iPhone実機・母語・聴感・本番公開確認とは区別。既存の本人識別等の未完了は維持。
