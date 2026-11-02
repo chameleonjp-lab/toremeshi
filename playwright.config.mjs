@@ -1,0 +1,2 @@
+import {defineConfig,devices} from '@playwright/test';
+export default defineConfig({testDir:'e2e',timeout:60000,fullyParallel:true,workers:2,reporter:'list',use:{baseURL:'http://127.0.0.1:4175',viewport:{width:402,height:874}},webServer:{command:'python3 -m http.server 4175 --bind 127.0.0.1',url:'http://127.0.0.1:4175',reuseExistingServer:!process.env.CI},projects:[{name:'chromium',use:{browserName:'chromium'}},{name:'webkit',use:{browserName:'webkit'}}]});
