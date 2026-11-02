@@ -36,7 +36,8 @@ try{
  await context.addInitScript(()=>{localStorage.setItem('toremeshi:language:v1','ja');localStorage.setItem('toremeshi:sound:v1',JSON.stringify({enabled:false,volume:0}));let seed=23;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);window.open=()=>null;});
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await page.goto(origin+'/');await page.locator('.name-input').fill('');await page.locator('#panel > button.primary').click();
- await page.locator('.intro-start').click();await page.locator('.choice').first().waitFor({state:'visible'});await page.waitForFunction(()=>{const c=document.querySelector('#three-character-container canvas');return window.__trainerFrames>=5&&c?.width>100&&c?.height>100});
+ await page.locator('.intro-start').click();await page.locator('.choice:not([disabled])').first().waitFor({state:'visible'});
+ assert.ok(!(await page.locator('#panel .question').innerText()).includes('相談者が来ています'),'Capture the actual question, not the approach placeholder');await page.waitForFunction(()=>{const c=document.querySelector('#three-character-container canvas');return window.__trainerFrames>=5&&c?.width>100&&c?.height>100});
  const framesAfterReveal=await page.evaluate(()=>window.__trainerFrames);await page.waitForFunction(before=>window.__trainerFrames>=before+2,framesAfterReveal);
  const renderer=await page.locator('#three-character-container canvas').evaluate(canvas=>{const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');return{width:canvas.width,height:canvas.height,contextLost:!gl||gl.isContextLost()}});
  assert.equal(renderer.contextLost,false);assert.ok(renderer.width>100&&renderer.height>100);
