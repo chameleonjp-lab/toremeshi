@@ -12,7 +12,8 @@
     "play-receipts.mjs",
     "sound.mjs",
     "i18n.mjs",
-    "locales.mjs"
+    "locales.mjs",
+    "assets/social-card.png"
   ],
   "optional": [
     "assets/characters/trainer.glb"

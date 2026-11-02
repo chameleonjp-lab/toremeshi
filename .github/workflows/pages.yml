@@ -25,12 +25,16 @@ jobs:
       - run: npm run test:e2e
       - run: npm install --no-save --package-lock=false --ignore-scripts three@0.184.0
       - run: node scripts/share-capture.mjs
+      - run: node scripts/share-visual.mjs
+      - run: BROWSER_ENGINE=webkit node scripts/share-visual.mjs
       - name: Save anonymous actual-game material
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: toremeshi-share-capture
-          path: test-results/share-capture/
+          path: |
+            test-results/share-capture/
+            test-results/share-visible/
           if-no-files-found: ignore
       - run: python scripts/test-pages.py
       - run: python scripts/prepare-pages.py
