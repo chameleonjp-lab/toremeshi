@@ -10,7 +10,7 @@ test('all fifteen home/result templates end in official two tags and fit X weigh
  }
 });
 test('actual fixed PNG is wired into consistent OG/Twitter large-image metadata',()=>{
- for(const attr of ['property="og:image"','name="twitter:image"'])assert.ok(html.includes(`<meta ${attr} content="${url}assets/social-card.png"`));
+ for(const attr of ['property="og:image"','name="twitter:image"'])assert.ok(html.includes(`<meta ${attr} content="https://chameleonjp-lab.github.io/toremeshi/assets/social-card.png"`));
  assert.ok(html.includes('<meta name="twitter:card" content="summary_large_image"'));for(const [key,value]of [['og:image:width','1200'],['og:image:height','630']])assert.ok(html.includes(`<meta property="${key}" content="${value}"`));
  const p=new URL('../assets/social-card.png',import.meta.url);assert.ok(existsSync(p));const b=readFileSync(p);assert.equal(b.subarray(1,4).toString(),'PNG');assert.equal(b.readUInt32BE(16),1200);assert.equal(b.readUInt32BE(20),630);
 });

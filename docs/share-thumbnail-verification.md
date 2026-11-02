@@ -20,8 +20,9 @@
 
 ## 適用順と戻し方
 1. 本人がDraftの現在headを確認し、mainへマージする。PR/作業branchでは検査のみ。既mainだけが従来のPages upload/deploy対象で、一時作業branchのpush対象はDraft前に外す。
-2. 正式URL `https://chameleonjp.codeberg.page/toremeshi/` でHTML/画像の配信を別途確認する。GitHubマージだけでCodebergへ届くとは断定しない。登録切替や公開設定変更はこの変更に含めない。
-3. iPhone Safariでホーム/結果のX、戻った後の結果保持を確認する。X投稿は本人が確定する。
-4. 戻す場合はこのPR差分をrevertし既存の公開手順で扱う。記録・設定・DBを消去しない。
+2. OG/Twitter画像URLだけは既に配信を確認済みのGitHub Pages `https://chameleonjp-lab.github.io/toremeshi/assets/social-card.png` を指定する。既indexは2026-11-02 03:41 UTC時点HTTP200、main `5d995c2e207212be6ea9c18a3ab4454711d9fc7e` と全文一致、実配備run41373041493の環境URLでも確認。新しい画像は本人マージ後の配信待ちであり、現時点で到達済みとはしない。canonical/共有URL/登録は変更しない。
+3. 正式URL `https://chameleonjp.codeberg.page/toremeshi/` でHTML/画像の配信を別途確認する。GitHubマージだけでCodebergへ届くとは断定しない。登録切替や公開設定変更はこの変更に含めない。
+4. iPhone Safariでホーム/結果のX、戻った後の結果保持を確認する。X投稿は本人が確定する。
+5. 戻す場合はこのPR差分をrevertし既存の公開手順で扱う。記録・設定・DBを消去しない。
 
 結果は必要に応じてスクロールして共有へ到達する受入で、結果全体が一画面に収まるとの保証ではない。
