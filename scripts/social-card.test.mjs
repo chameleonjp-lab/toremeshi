@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,existsSync,mkdtempSync,mkdirSync,copyFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';import {join,dirname} from 'node:path';import {fileURLToPath} from 'node:url';import {spawnSync} from 'node:child_process';
 import {catalogs,sourceMap} from '../locales.mjs';import {createI18n} from '../i18n.mjs';
-const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const url='https://chameleonjp.codeberg.page/toremeshi/';const tags='#トレメシ #ゲーム制作';
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const url='https://chameleonjp-lab.github.io/toremeshi/';const tags='#トレメシ #ゲーム制作';
 function weight(value){return [...value.replace(/https?:\/\/[^\s]+/gu,'a'.repeat(23))].reduce((n,c)=>{const x=c.codePointAt(0);return n+((x<=0x10ff||(x>=0x2000&&x<=0x200d)||(x>=0x2010&&x<=0x201f)||(x>=0x2032&&x<=0x2037))?1:2)},0)}
 test('all fifteen home/result templates end in official two tags and fit X weighted limit',()=>{
  assert.equal(Object.keys(catalogs).length,15);
@@ -19,3 +19,5 @@ test('public allowlist contains the adopted image once and excludes capture/test
  const root=mkdtempSync(join(tmpdir(),'tore-social-stage-'));for(const file of [...manifest.required,'scripts/pages-files.json','scripts/prepare-pages.py']){const dest=join(root,file);mkdirSync(dirname(dest),{recursive:true});copyFileSync(new URL('../'+file,import.meta.url),dest);}
  const result=spawnSync('python3',[join(root,'scripts/prepare-pages.py')],{encoding:'utf8',env:{...process.env,GIT_DIR:fileURLToPath(new URL('../.git',import.meta.url)),GIT_WORK_TREE:root}});assert.equal(result.status,0,result.stderr);for(const file of manifest.required)assert.deepEqual(readFileSync(join(root,'_site',file)),readFileSync(new URL('../'+file,import.meta.url)),file);assert.ok(!existsSync(join(root,'_site/scripts')));
 });
+
+test('GitHub Pages is the only canonical and runtime share destination',()=>{const home="https://chameleonjp-lab.github.io/toremeshi/";const tag=(k,v)=>html.match(new RegExp('<(?:meta|link)[^>]+(?:property|name|rel)="'+k+'"[^>]+(?:content|href)="([^\"]+)"','g'))?.join('');for(const k of ['canonical','og:url']){const found=tag(k);assert.ok(found?.includes(home),k);assert.equal(found.split(home).length,2,k)};for(const k of ['og:image','twitter:image']){const found=tag(k);assert.ok(found?.includes(home+"assets/social-card.png"),k);assert.equal(found.split(home).length,2,k)};assert.match(html,new RegExp('\\bGAME_URL\\s*=\\s*[\'\"]'+home));assert.ok(!html.includes("https://chameleonjp.codeberg.page/toremeshi/"));});
