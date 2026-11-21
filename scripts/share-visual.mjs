@@ -1,7 +1,7 @@
 import {chromium,webkit} from 'playwright';
 import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
 import {catalogs} from '../locales.mjs';import {inspectShareTarget} from './share-visibility.mjs';
-const root=path.resolve(new URL('..',import.meta.url).pathname),origin='https://toremeshi.test',official='https://chameleonjp.codeberg.page/toremeshi/';
+const root=path.resolve(new URL('..',import.meta.url).pathname),origin='https://toremeshi.test',official='https://chameleonjp-lab.github.io/toremeshi/';
 const engine=process.env.BROWSER_ENGINE||'chromium';assert.ok(['chromium','webkit'].includes(engine));
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'scripts/pages-files.json'),'utf8')),allowed=new Set([...manifest.required,...manifest.optional]);
 const mime={'.html':'text/html','.js':'application/javascript','.mjs':'application/javascript','.css':'text/css','.csv':'text/csv','.json':'application/json','.png':'image/png'};
